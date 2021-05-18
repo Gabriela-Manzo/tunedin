@@ -9,14 +9,18 @@ const createSchema = (modelPai, model, options = {}) => {
         timestamps: true,
         collection: 'UsuarioCollection',
         ...options,
-    })
+    })    
 }
 
 const userSchema = require('./usuario');
 const usuario = mongoose.model('usuario', createSchema(undefined, userSchema, {
-    descriminatorKey: 'kind',
+    discriminatorKey: 'kind',
 }));
 
+const adiminSchema = require('./admnistrador')
+const admnistrador = usuario.discriminator('admnistrador', createSchema(userSchema, adiminSchema, {}))
+
 module.exports = {
-    usuario
+    usuario,
+    admnistrador
 }

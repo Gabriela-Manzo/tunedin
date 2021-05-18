@@ -1,7 +1,7 @@
 {
   "name": "projeto_04_backend",
   "version": "0.1.0",
-  "description": "",
+  "description": "TunedIn Inc.",
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
@@ -18,9 +18,12 @@
     "cors": "^2.8.5",
     "dotenv": "^9.0.1",
     "express": "^4.17.1",
+    "formidable": "^1.2.2",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
-    "mongoose": "^5.12.8"
+    "mongoose": "^5.12.8",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
   }
 }

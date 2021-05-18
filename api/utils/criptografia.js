@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const hashSecret = process.env.MD5_SECRET
 const jwtSecret = process.env.JWT_SECRET
+const jwtTimeLimit = process.env.JWT_VALID_TIME
 
 const criarHash = (senha) => {
 
@@ -10,9 +11,9 @@ const criarHash = (senha) => {
 }
 
 const criarToken = (model) => {
-    return jwt.sign({...model}), jwtSecret, {
-        expiresIn: `${process.env.JWT_VALID_TIME}`
-    }
+    return jwt.sign({...model}, jwtSecret, {
+        expiresIn: `${jwtTimeLimit}ms`
+    })
 }
 
 const validarToken = (token) => {

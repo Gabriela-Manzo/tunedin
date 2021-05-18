@@ -8,13 +8,13 @@ const userTipo = (tipo) => {
 }
 
 const userData = (model) => {
-    const { id, email, tipo, nome, nomeFantasia } = model;
+    const { id, email, kind, nome, nomeFantasia } = model;
 
     return {
         id,
         email,
         nome: nome ? nome : nomeFantasia,
-        tipoUsuario: userTipo(tipo),
+        tipoUsuario: userTipo(kind),
     }
 }
 
