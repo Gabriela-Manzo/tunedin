@@ -20,7 +20,14 @@ const usuario = mongoose.model('usuario', createSchema(undefined, userSchema, {
 const adiminSchema = require('./admnistrador')
 const admnistrador = usuario.discriminator('admnistrador', createSchema(userSchema, adiminSchema, {}))
 
+const categoriaSchema = require('./categoria');
+const categoria = mongoose.model('categoria', createSchema(undefined, categoriaSchema, {
+  collection: 'CategoriaCollection',
+}));
+
+
 module.exports = {
     usuario,
-    admnistrador
+    admnistrador,
+    categoria
 }
