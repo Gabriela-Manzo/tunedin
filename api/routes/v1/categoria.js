@@ -1,5 +1,6 @@
 const categoriaController = require('../../controllers/categoria.controller')
 const validateDTO = require('../../utils/middlewares/validate-dto.middleware')
+const fileUpload = require('../../utils/middlewares/file-upload.middleware')
 const Joi = require('joi')
 
 
@@ -10,6 +11,7 @@ module.exports = (router) => {
         categoriaController.listar
     )
     .post(
+        fileUpload('categoria'),
         validateDTO('body', {
             nome: Joi.string().required().messages({
                 'any.required': `"nome" é um campo obrigatório`,
@@ -29,13 +31,13 @@ module.exports = (router) => {
         categoriaController.criar
     )
 
-    router.route('/categoria/:idcategoria')
+    router.route('/categoria/:categoriaid')
     .get(
         categoriaController.buscaPorId
     )
     .put(
         validateDTO('params', {
-        idcategoria: Joi.string().required().messages({
+          categoriaid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
             'any.required': `"nome" é um campo obrigatório`,
             'string.empty': `"nome" não deve ser vazio`,
           }),
@@ -54,15 +56,15 @@ module.exports = (router) => {
                 'booleam.empty': `"status" não deve ser vazio`,
               }),
             }),
-        categoriaController.altera
+        categoriaController.alterar
     )
     .delete(
         validateDTO('params', {
-        idcategoria: Joi.string().required().messages({
+          categoriaid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
             'any.required': `"nome" é um campo obrigatório`,
             'string.empty': `"nome" não deve ser vazio`,
           }),
         }),
-        categoriaController.deleta
+        categoriaController.deletar
     )
 }
