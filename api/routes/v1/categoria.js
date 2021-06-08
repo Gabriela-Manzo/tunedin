@@ -17,11 +17,7 @@ module.exports = (router) => {
                 'any.required': `"nome" é um campo obrigatório`,
                 'string.empty': `"nome" não deve ser vazio`,
               }),
-              descricao: Joi.string().required().messages({
-                'any.required': `"descricao" é um campo obrigatório`,
-                'string.empty': `"descricao" não deve ser vazio`,
-              }),
-              status: Joi.boolean().required().messages({
+            status: Joi.boolean().required().messages({
                 'any.required': `"status" é um campo obrigatório`,
                 'booleam.empty': `"status" não deve ser vazio`,
               }),
@@ -36,10 +32,12 @@ module.exports = (router) => {
         categoriaController.buscaPorId
     )
     .put(
+        fileUpload('categoria', true),
         validateDTO('params', {
           categoriaid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
-            'any.required': `"nome" é um campo obrigatório`,
-            'string.empty': `"nome" não deve ser vazio`,
+          'any.required': `"categoria id" é um campo obrigatório`,
+          'string.empty': `"categoria id" não deve ser vazio`,
+          'string.regex': `"categoria id" fora do formato experado`,
           }),
         }),
         validateDTO('body', {
@@ -47,14 +45,12 @@ module.exports = (router) => {
                 'any.required': `"nome" é um campo obrigatório`,
                 'string.empty': `"nome" não deve ser vazio`,
               }),
-              descricao: Joi.string().required().messages({
-                'any.required': `"descricao" é um campo obrigatório`,
-                'string.empty': `"descricao" não deve ser vazio`,
-              }),
-              status: Joi.boolean().required().messages({
+            status: Joi.boolean().required().messages({
                 'any.required': `"status" é um campo obrigatório`,
                 'booleam.empty': `"status" não deve ser vazio`,
               }),
+            }, {
+              allowUnknown: true,
             }),
         categoriaController.alterar
     )

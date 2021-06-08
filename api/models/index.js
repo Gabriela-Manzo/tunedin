@@ -12,22 +12,44 @@ const createSchema = (modelPai, model, options = {}) => {
     })    
 }
 
+//USUARIOS
 const userSchema = require('./usuario');
 const usuario = mongoose.model('usuario', createSchema(undefined, userSchema, {
     discriminatorKey: 'kind',
 }));
 
 const adiminSchema = require('./admnistrador')
-const admnistrador = usuario.discriminator('admnistrador', createSchema(userSchema, adiminSchema, {}))
+const admnistrador = usuario.discriminator('admnistrador', createSchema(userSchema, adiminSchema, {}));
 
+const musicosSchema = require('./musicos');
+const musicos = usuario.discriminator('musicos', createSchema(userSchema, musicosSchema, {}));
+
+const clienteSchema = require('./cliente');
+const cliente = usuario.discriminator('cliente', createSchema(userSchema, clienteSchema, {}));
+
+//CATEGORIA
 const categoriaSchema = require('./categoria');
 const categoria = mongoose.model('categoria', createSchema(undefined, categoriaSchema, {
   collection: 'CategoriaCollection',
+  toJSON: {
+      virtuals: true,
+  },
 }));
 
+//ANUNCIOS
+const anuncioSchema = require('./anuncio');
+const anuncio = mongoose.model('anuncio', createSchema(undefined, anuncioSchema, {
+    collection: 'AnuncioCollection',
+    toJSON: {
+        virtuals: true,
+    },
+}));
 
 module.exports = {
     usuario,
     admnistrador,
-    categoria
+    categoria,
+    musicos,
+    cliente,
+    anuncio
 }

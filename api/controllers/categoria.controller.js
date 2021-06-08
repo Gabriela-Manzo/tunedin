@@ -14,10 +14,7 @@ const criar = async (req, res, next) => {
     const codigoRetorno = resultService.sucesso ? 200 : 401;
     const dadoRetorno = resultService.sucesso ? { data: resultService.data } : { detalhes: resultService.detalhes };
 
-    return res.status(codigoRetorno).send({
-        mensagem: resultService.mensagem,
-        ...dadoRetorno
-    });
+    return res.status(codigoRetorno).send(dadoRetorno);
 }
 
 const alterar = async (req, res, next) => {
@@ -51,7 +48,7 @@ const buscaPorId = async (req, res, next) => {
 const deletar = async (req, res, next) => {
     const { params } = req;
   
-    const resultadoServico = await categoriaService.deleta(params.categoriaid);
+    const resultadoServico = await categoriaService.deletar(params.categoriaid);
 
     const codigoRetorno = resultadoServico.sucesso ? 200 : 400;
 

@@ -22,7 +22,6 @@ const listarTodas = async () => {
 const criarCategoria = async (model) => {
     const novaCategoria = await categoria.create({
         nome: model.nome,
-        descricao: model.descricao,
         status: model.status,
         imagem: {
             nomeOriginal: model.imagem.originalname,
@@ -57,7 +56,7 @@ const deletar = async (categoriaId) => {
     }
 
     const { imagem } = categoriaDB;
-    fileUtils.remover('categorias', imagem.nome);
+    fileUtils.remover('categoria', imagem.nome);
 
     await categoria.remove(categoriaDB);
 
@@ -79,21 +78,23 @@ const alterarCategoria = async (categoriaId, model) => {
             ]
         };
     }
-
-    fileUtils.remover('categoria', categoriaDB.imagem.nome);
-
+    
     categoriaDB.nome = model.nome;
-    categoriaDB.descricao = model.descricao;
     categoriaDB.status = model.status;
-    categoriaDB.imagem = {
-        nomeOriginal: model.imagem.originalname,
-        nome: model.imagem.novoNome,
-        tipo: model.imagem.tipo,
+
+    if (model.imagem){
+        fileUtils.remover('categoria', categoriaDB.imagem.nome);
+        fileUtils.mover(model.imagem.caminhoOriginal, model.imagem.novoCaminho);
+        
+        categoriaDB.imagem = {
+            nomeOriginal: model.imagem.originalname,
+            nome: model.imagem.novoNome,
+            tipo: model.imagem.tipo,
+        }
+
     }
 
   await categoriaDB.save();
-
-  fileUtils.mover(model.imagem.caminhoOriginal, model.imagem.novoCaminho)
 
   return {
       sucesso: true,

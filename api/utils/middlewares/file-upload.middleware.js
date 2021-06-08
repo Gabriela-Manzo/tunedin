@@ -2,7 +2,7 @@ const formidable = require('formidable')
 const fileUtils = require('../file.utils')
 
 const fileUpload = (destino) => {
-    const form = formidable.IncomingForm({ keepExtensions: true });
+    const form = formidable.IncomingForm({ });
     form.uploadDir = fileUtils.criarEnd('temp')
     
     return (req, res, next) => {

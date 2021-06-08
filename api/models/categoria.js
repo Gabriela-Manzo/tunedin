@@ -4,10 +4,6 @@ const categoriaSchema = {
       type: String,
       required: true,
     },
-    descricao: {
-      type: String,
-      required: false,
-    },
     status: {
       type: Boolean,
       required: true,
@@ -21,7 +17,7 @@ const categoriaSchema = {
         type: String,
         required: false,
       },
-      type: {
+      tipo: {
         type: String,
         required: false,
       },

@@ -14,8 +14,9 @@ const criaEndDownload = (origem, arquivoNome) => {
 
 const criarNome = (tipo) => {
     const tipoTratado = tipo.split('/')[1];
+    console.log(tipo)
     return `${uuid()}.${tipoTratado}`
-}
+  }
 
 const mover = (temporario, definitivo) => {
     return fs.renameSync(temporario, definitivo);

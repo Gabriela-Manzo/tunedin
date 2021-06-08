@@ -6,12 +6,21 @@ const userExiste = async (email, senha) => {
     return await usuario.findOne({ email, senha: criptografia.criarHash(senha) }) ? true : false;
 }
 
+const validaEmail = async (email) => {
+
+    const usuarios = await usuario.find({ email });
+  
+    return usuarios.length > 0 ? true : false;
+  
+  }
+  
 const credencial = async (usuarioEmail) => {
     const userDB = await usuario.findOne({
         email: usuarioEmail
     });
     
     const userDTO = usuarioMapper.userData(userDB)
+    
     return {
         token: criptografia.criarToken(userDTO),
         userDTO,
@@ -51,5 +60,6 @@ const cria = async () => {
 
 module.exports = {
     autenticar,
-    cria
+    cria,
+    validaEmail
 }
