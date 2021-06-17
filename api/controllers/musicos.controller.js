@@ -9,7 +9,7 @@ const listar = async (req, res, next) => {
 const criar = async (req, res, next) => {
     const { body } = req;
     
-    const resultService = musicosService.criarPerfil(body)
+    const resultService = await musicosService.criarPerfil(body)
 
     const codigoRetorno = resultService.sucesso ? 200 : 401;
     const dadoRetorno = resultService.sucesso ? { data: resultService.data } : { detalhes: resultService.detalhes };

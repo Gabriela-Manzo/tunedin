@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const anuncioSchema = {
     usuario: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'usuario',
     },
     descricao: {

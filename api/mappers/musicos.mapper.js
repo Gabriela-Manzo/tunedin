@@ -1,7 +1,7 @@
 const fileUtils = require('../utils/file.utils')
 
 const musicosData = (model) => {
-    const{  _id, nome, categoria, generomusical, imagem, status } = model
+    const{  _id, nome, categoria, generomusical, imagem, cidade, status } = model
     
     return{
         id: _id,
@@ -9,6 +9,7 @@ const musicosData = (model) => {
         categoria,
         generomusical,
         imagem: fileUtils.criaEndDownload('musicos', imagem.nome),
+        cidade,
         status,
     }
 }

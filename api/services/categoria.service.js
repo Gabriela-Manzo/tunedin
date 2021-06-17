@@ -24,9 +24,9 @@ const criarCategoria = async (model) => {
         nome: model.nome,
         status: model.status,
         imagem: {
-            nomeOriginal: model.imagem.originalname,
+            nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
-            tipo: model.imagem.type,
+            tipo: model.imagem.tipo,
           }      
     })
     
@@ -35,7 +35,7 @@ const criarCategoria = async (model) => {
     return{
         sucesso: true,
         mensagem: 'cadstro realizado com sucesso',
-        data: categoriaMapper.categoriaData(novaCategoria)
+        data: categoriaMapper.categoriaData(novaCategoria),
     }
 }
 
@@ -58,7 +58,7 @@ const deletar = async (categoriaId) => {
     const { imagem } = categoriaDB;
     fileUtils.remover('categoria', imagem.nome);
 
-    await categoria.remove(categoriaDB);
+    await categoria.deleteOne(categoriaDB);
 
     return {
         sucesso: true,
@@ -87,7 +87,7 @@ const alterarCategoria = async (categoriaId, model) => {
         fileUtils.mover(model.imagem.caminhoOriginal, model.imagem.novoCaminho);
         
         categoriaDB.imagem = {
-            nomeOriginal: model.imagem.originalname,
+            nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
             tipo: model.imagem.tipo,
         }

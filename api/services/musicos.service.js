@@ -31,9 +31,9 @@ const criarPerfil = async (model) => {
         senha: criarHash(senha),
         status: 'Analise',
         imagem: {
-            nomeOriginal: model.imagem.originalname,
+            nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
-            tipo: model.imagem.type,
+            tipo: model.imagem.tipo,
           }      
     })
     

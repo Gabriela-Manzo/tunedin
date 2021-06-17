@@ -11,21 +11,26 @@ const criarHash = (senha) => {
 }
 
 const criarToken = (model) => {
-    return jwt.sign({...model}, jwtSecret, {
+    return jwt.sign({ ...model }, jwtSecret, {
         expiresIn: `${jwtTimeLimit}ms`
     })
 }
+const decodificaToken = (token) => {
+    return jwt.decode(token);
+  }
+  
 
 const validarToken = (token) => {
     try {
         return jwt.verify(token, jwtSecret)
     } catch (error) {
-        return undefined
+        return false;
     }
 }
 
 module.exports = {
     criarHash,
     criarToken,
-    validarToken
+    validarToken,
+    decodificaToken
 }

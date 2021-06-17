@@ -4,8 +4,8 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 const enviar = async ({ destinatario, remetente, assunto, corpo }) => {
 
   const msg = {
-    to: destinatario, // Change to your recipient
-    from: remetente, // Change to your verified sender
+    to: destinatario, 
+    from: remetente,
     subject: assunto,
     text: corpo,
     // html: '<strong>and easy to do anywhere, even with Node.js</strong>',

@@ -9,7 +9,7 @@ const musicosSchema = {
         required: true,
     },
     categoria: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: 'categoria'
     },
     generomusical: {
@@ -21,7 +21,7 @@ const musicosSchema = {
         requied: true,
     },
     imagem: {
-        originalname: {
+        nomeOriginal: {
           type: String,
           required: false,
         },
@@ -33,7 +33,11 @@ const musicosSchema = {
           type: String,
           required: false,
         },
-      }  
+      },
+    cidade: {
+        type: String,
+        required: true,
+    }
 
 }
 

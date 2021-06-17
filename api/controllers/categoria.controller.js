@@ -9,9 +9,9 @@ const listar = async (req, res, next) => {
 const criar = async (req, res, next) => {
     const { body } = req;
     
-    const resultService = categoriaService.criarCategoria(body)
+    const resultService = await categoriaService.criarCategoria(body)
 
-    const codigoRetorno = resultService.sucesso ? 200 : 401;
+    const codigoRetorno = resultService.sucesso ? 200 : 400;
     const dadoRetorno = resultService.sucesso ? { data: resultService.data } : { detalhes: resultService.detalhes };
 
     return res.status(codigoRetorno).send(dadoRetorno);

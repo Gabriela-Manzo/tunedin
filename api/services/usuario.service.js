@@ -2,6 +2,45 @@ const { usuario } = require('../models/index')
 const criptografia = require('../utils/criptografia')
 const usuarioMapper = require('../mappers/usuario.mapper')
 
+const perfis = [
+    {
+      id: '1',
+      descricao: 'administrador',
+      funcionalidades: [
+        'ALTERA_CATEGORIA',
+        'CRIA_CATEGORIA',
+        'PESQUISA_CATEGORIA',
+        'REMOVE_CATEGORIA',
+        'PESQUISA_MUSICO',
+        'PESQUISA_MUSICO_ID',
+        'PESQUISA_MUSICO_CATEGORIA',
+        'ATIVAR_CLIENTE',
+        'INATIVAR_CLIENTE',
+        'PESQUISA_CLIENTE',
+      ]
+    },
+    {
+      id: '2',
+      descricao: 'musicos',
+      funcionalidades: [
+        'ALTERA_MUSICOS',
+        'PESQUISA_MUSICOS_ID',
+        'PESQUISA_ANUNCIOS',
+        'PESQUISA CLIENTES',
+        'CRIA_ANUNCIOS',
+        'REMOVE_ANUNCIOS',
+        'PESQUISA_MUSICOS_CATEGORIA',
+      ]
+    },
+    {
+      id: '3',
+      descricao: 'cliente',
+      funcionalidades: [
+      ]
+    },
+  ];
+  
+
 const userExiste = async (email, senha) => {
     return await usuario.findOne({ email, senha: criptografia.criarHash(senha) }) ? true : false;
 }
@@ -56,10 +95,24 @@ const cria = async () => {
     });
   
   }
+
+const buscarPefilPorId = (perfilId) => {
+    const result = perfis.find(item => Number(item.id) === Number(perfilId));
+    return result;
+  }
+  
+const validaFuncionalidadeNoPerfil = (perfilId, funcionalidade) => {
+    const perfil = buscarPefilPorId(perfilId);
+    return perfil.funcionalidades.includes(funcionalidade);
+  }
+  
+  
+  
   
 
 module.exports = {
     autenticar,
     cria,
-    validaEmail
+    validaEmail,
+    validaFuncionalidadeNoPerfil
 }
