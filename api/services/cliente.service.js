@@ -5,7 +5,6 @@ const { validaEmail } = require('../services/usuario.service')
 const { criarHash } = require('../utils/criptografia')
 
 const criarCliente = async (model) => {
-    console.log("estou aquiiii");
     const { email, senha, ...resto } = model;
 
     if (await validaEmail(email))

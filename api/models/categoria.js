@@ -2,13 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const categoriaSchema = {
+module.exports = {
     nome: {
       type: String,
-      required: true,
-    },
-    status: {
-      type: Boolean,
       required: true,
     },
     imagem: {
@@ -25,11 +21,13 @@ const categoriaSchema = {
         required: false,
       },
     },
+    status: {
+      type: Boolean,
+      required: true,
+    },
     
-    usuarios: [{
+    post: [{
       type: Schema.Types.ObjectId,
-      ref: 'usuario'
+      ref: 'post'
     }]
 }
-
-module.exports = categoriaSchema

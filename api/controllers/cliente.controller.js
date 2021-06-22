@@ -15,13 +15,11 @@ const ativa = async (req, res, next) => {
 
     const { clienteid } = req.params;
   
-    //TODO: invocar método do servico
     const resultadoServico = await clienteService.alteraStatus(clienteid, 'Ativo');
   
     const codigoRetorno = resultadoServico.sucesso ? 200 : 400;
     const dadoRetorno = resultadoServico.sucesso ? { data: resultadoServico.data } : { detalhes: resultadoServico.detalhes };
   
-    //TODO: tratar saída
     return res.status(codigoRetorno).send({
       ...dadoRetorno
     });
@@ -31,14 +29,12 @@ const ativa = async (req, res, next) => {
 const inativa = async (req, res, next) => {
 
     const { clienteid } = req.params;
-  
-    //TODO: invocar método do servico
+   
     const resultadoServico = await clienteService.alteraStatus(clienteid, 'Inativo');
   
     const codigoRetorno = resultadoServico.sucesso ? 200 : 400;
     const dadoRetorno = resultadoServico.sucesso ? { data: resultadoServico.data } : { detalhes: resultadoServico.detalhes };
   
-    //TODO: tratar saída
     return res.status(codigoRetorno).send({
       mensagem: 'operaçao realizada com sucesso',
       ...dadoRetorno

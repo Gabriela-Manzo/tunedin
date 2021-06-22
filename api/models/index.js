@@ -36,10 +36,10 @@ const categoria = mongoose.model('categoria', createSchema(undefined, categoriaS
   },
 }));
 
-//ANUNCIOS
-const anuncioSchema = require('./anuncio');
-const anuncio = mongoose.model('anuncio', createSchema(undefined, anuncioSchema, {
-    collection: 'AnuncioCollection',
+//POSTS
+const postSchema = require('./post');
+const post = mongoose.model('post', createSchema(undefined, postSchema, {
+    collection: 'PostCollection',
     toJSON: {
         virtuals: true,
     },
@@ -51,5 +51,5 @@ module.exports = {
     categoria,
     musicos,
     cliente,
-    anuncio
+    post
 }

@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const anuncioSchema = {
+module.exports = {
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'usuario',
+    },
+    categoria: {
+        type: Schema.Types.ObjectId,
+        ref: 'categoria',
     },
     descricao: {
         type: String,
@@ -15,5 +19,3 @@ const anuncioSchema = {
         required: true,
     },
 }
-
-module.exports = anuncioSchema

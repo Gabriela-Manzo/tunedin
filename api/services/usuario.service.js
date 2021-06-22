@@ -105,14 +105,19 @@ const validaFuncionalidadeNoPerfil = (perfilId, funcionalidade) => {
     const perfil = buscarPefilPorId(perfilId);
     return perfil.funcionalidades.includes(funcionalidade);
   }
+
+const buscaTipoUsuarioPorId = (tipoUsuarioId) => {
+    return perfis.find(item => {
+      return item.id === tipoUsuarioId
+    })
   
-  
-  
+  }
   
 
 module.exports = {
     autenticar,
     cria,
     validaEmail,
-    validaFuncionalidadeNoPerfil
+    validaFuncionalidadeNoPerfil,
+    buscaTipoUsuarioPorId
 }

@@ -23,7 +23,7 @@ const fileUpload = (destino, isUpdate = false) => {
                 });
             }
 
-            if (files.imagem) {
+            if (files.imagem && files.imagem.nomeOriginal !== '') {
         
                 const novoNome = fileUtils.criarNome(files.imagem.type);
                 const novoCaminho = fileUtils.criarEnd(destino, novoNome)

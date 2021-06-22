@@ -1,7 +1,8 @@
 const { musicos } = require('../models/index');
-const musicosMapper = require('../mappers/musicos.mapper');
+const { musicosData } = require('../mappers/musicos.mapper');
+const postMapper = require('../mappers/post.mapper');
 const fileUtils = require('../utils/file.utils');
-const { validaEmail } = require('../services/usuario.service')
+const { validaEmail, buscaTipoUsuarioPorId } = require('../services/usuario.service')
 const { criarHash } = require('../utils/criptografia')
 
 const listarTodos = async () => {
@@ -27,8 +28,8 @@ const criarPerfil = async (model) => {
   
     const novoPerfil = await musicos.create({
         email,
-        ...resto,
         senha: criarHash(senha),
+        ...resto,
         status: 'Analise',
         imagem: {
             nomeOriginal: model.imagem.nomeOriginal,
@@ -65,17 +66,16 @@ const alteraStatus = async (id, status) => {
   
     await musicosDB.save();
   
-    if (status === 'Ativo') {
+    // if (status === 'Ativo') {
   
-      //TODO: adicionar o envio de email
-      emailUtils.enviar({
-        destinatario: musicosDB.email,
-        remetente: process.env.SENDGRID_REMETENTE,
-        assunto: `Confirmação do cadastro de ${musicos.nome}`,
-        corpo: `sua conta do projeto 04 já esta liberada para uso para uso já`,
-      });
+    //   emailUtils.enviar({
+    //     destinatario: musicosDB.email,
+    //     remetente: process.env.SENDGRID_REMETENTE,
+    //     assunto: `Confirmação do cadastro de ${musicos.nome}`,
+    //     corpo: `sua conta do projeto 04 já esta liberada para uso para uso já`,
+    //   });
   
-    }
+    // }
   
     return {
       sucesso: true,
@@ -87,27 +87,59 @@ const alteraStatus = async (id, status) => {
   
   }
 
-  // const listaMusicoByCategoria = async (model) => {
+  const listaPostsByMusico = async (musicoid, musicologadoid) => {
 
-  //   console.log(musicos.categoria);
-
-  //     const musicosDB = await musicos.findOne(model.categoria).populate('musicos');
-
-      
-
-  //     // console.log(JSON.stringfy(musicosDB.categoria));
-
-  //     // const musicosAsJSON = musicosDB.toJSON()
-
-  //     return musicosDB.categoria.map(item => {
-  //       return musicosMapper.musicosData(item);
-  //     })
-
-  // }
+    const musicosFromDB = await musicos.findById(musicoid).populate('post');
+  
+    const musciosAsJSON = musicosFromDB.toJSON();
+    return musciosAsJSON.post.map(item => {
+      return postMapper.postData(item);
+    });
+  
+  }
+  
+  const buscaPorId = async (musicoid) => {
+  
+    //, { id, tipo }
+    const musicosDB = await musicos.findById(musicoid);
+  
+    if (!musicosDB) {
+      return {
+        sucesso: false,
+        mensagem: "operação não pode ser realizada",
+        detalhes: [
+          "o musico pesquisado não existe"
+        ]
+      }
+    }
+  
+    // const tipoUsuario = buscaTipoUsuarioPorId(tipo);
+  
+    // if (tipoUsuario.descricao === "musico") {
+    //   if (musicoid !== id) {
+    //     return {
+    //       sucesso: false,
+    //       mensagem: "operação não pode ser realizada",
+    //       detalhes: [
+    //         "o usuário não pode realizar esta operação"
+    //       ]
+    //     }
+    //   }
+    // }
+  
+    return {
+      sucesso: true,
+      data: musicosMapper.musicosData(musicosDB.toJSON()),
+    }
+  
+  
+  }
 
 module.exports = {
     criarPerfil,
     listarTodos,
     alteraStatus,
-    // listaMusicoByCategoria
+    listaPostsByMusico,
+    buscaPorId
+   
 }

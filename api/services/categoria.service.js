@@ -41,7 +41,6 @@ const criarCategoria = async (model) => {
 
 const deletar = async (categoriaId) => {
     const categoriaDB = await categoria.findOne({ _id: categoriaId });
-
     const categoriaDBJson = categoriaDB.toJSON();
     console.log(categoriaDBJson)
 

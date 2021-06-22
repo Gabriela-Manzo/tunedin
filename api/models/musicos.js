@@ -8,9 +8,9 @@ const musicosSchema = {
         type: String,
         required: true,
     },
-    categoria: {
-        type: Schema.Types.ObjectId,
-        ref: 'categoria'
+    profile: {
+      type: String,
+      required: true,
     },
     generomusical: {
         type: String,

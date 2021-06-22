@@ -1,4 +1,7 @@
-const userSchema = {
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+module.exports = {
     email: {
         type: String,
         required: true,
@@ -7,6 +10,9 @@ const userSchema = {
         type: String,
         required: true,
     },
+    
+    post: [{
+        type: Schema.Types.ObjectId,
+        ref: 'post'
+    }]
 }
-
-module.exports = userSchema

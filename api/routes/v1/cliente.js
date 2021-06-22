@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const validateDTO = require('../../utils/middlewares/validate-dto.middleware');
-
+const postController = require('../../controllers/post.controller')
 const clienteController = require('../../controllers/cliente.controller')
 
 module.exports = (router) => {
@@ -69,6 +69,48 @@ module.exports = (router) => {
         }),
       }),
       clienteController.inativa
+    )
+
+    router.route('/cliente/:usuarioid/post')
+    .post(
+        validateDTO('params', {
+            usuarioid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
+              'any.required': `"usuario id" é um campo obrigatório`,
+              'string.empty': `"usuario id" não deve ser vazio`,
+              'string.pattern.base': `"usuario id" fora do formato experado`,
+            }),
+          }),
+        validateDTO('body', {
+          descricao: Joi.string().required().messages({
+            'any.required': `"descrição" é um campo obrigatório`,
+            'string.empty': `"descrição" não deve ser vazio`,
+          }),
+          status: Joi.boolean().required().messages({
+            'any.required': `"status" é um campo obrigatório`,
+            'booleam.empty': `"status" não deve ser vazio`
+          }),
+        }, {
+          allowUnknown: true,
+        }),
+        postController.cria
+      )
+    
+    router
+    .route('/cliente/:usuarioid/post/:postid')
+    .delete(
+      validateDTO('params', {
+        usuarioid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
+          'any.required': `"usuario id" é um campo obrigatório`,
+          'string.empty': `"usuario id" não deve ser vazio`,
+          'string.pattern.base': `"usuario id" fora do formato experado`,
+        }),
+        postid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
+          'any.required': `"post id" é um campo obrigatório`,
+          'string.empty': `"post id" não deve ser vazio`,
+          'string.pattern.base': `"post id" fora do formato experado`,
+        }),
+      }),
+      postController.deleta
     )
 
   }
