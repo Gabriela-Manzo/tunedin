@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const musicosSchema = {
+module.exports = {
 
     nome: {
         type: String,
@@ -37,8 +37,14 @@ const musicosSchema = {
     cidade: {
         type: String,
         required: true,
-    }
+    },
+    post: [{
+      type: Schema.Types.ObjectId,
+      ref: 'post'
+  }],
+    curtidas: [{
+      type: Schema.Types.ObjectId,
+      ref: 'curtida'
+    }]
 
 }
-
-module.exports = musicosSchema

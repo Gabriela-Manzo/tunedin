@@ -1,5 +1,6 @@
-const criptografiaUitls = require('../criptografia');
+const criptografia = require('../criptografia');
 const usuarioService = require('../../services/usuario.service');
+
 const autorizar = (rota = '*') => {
 
   return async (req, res, next) => {
@@ -12,14 +13,13 @@ const autorizar = (rota = '*') => {
       })
     }
 
-    if (!criptografiaUitls.validarToken(token)) {
-      return res
-        .status(401)
-        .send({ mensagem: "usuário não autenticado." });
+    if (!criptografia.validarToken(token)) {
+      return res.status(401).send({ 
+        mensagem: "usuário não autenticado." });
     }
 
 
-    const { id, email, tipoUsuario } = criptografiaUitls.decodificaToken(token);
+    const { id, email, tipoUsuario } = criptografia.decodificaToken(token);
     
     if (!(await usuarioService.validaEmail(email))) {
       return res.status(403).send({
@@ -29,7 +29,7 @@ const autorizar = (rota = '*') => {
 
     if (rota != '*') {
 
-      if (!usuarioService.validaFuncionalidadeNoPerfil(tipoUsuario, rota))
+      if (!usuarioService.buscaTipoUsuario(tipoUsuario, rota))
         return res.status(403).send({
           mensagem: "usuário não autorizado."
         })

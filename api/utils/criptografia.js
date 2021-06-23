@@ -22,7 +22,8 @@ const decodificaToken = (token) => {
 
 const validarToken = (token) => {
     try {
-        return jwt.verify(token, jwtSecret)
+        jwt.verify(token, jwtSecret)
+        return true;
     } catch (error) {
         return false;
     }

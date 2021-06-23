@@ -18,8 +18,8 @@ const usuario = mongoose.model('usuario', createSchema(undefined, userSchema, {
     discriminatorKey: 'kind',
 }));
 
-const adiminSchema = require('./admnistrador')
-const admnistrador = usuario.discriminator('admnistrador', createSchema(userSchema, adiminSchema, {}));
+const adiminSchema = require('./administrador')
+const administrador = usuario.discriminator('administrador', createSchema(userSchema, adiminSchema, {}));
 
 const musicosSchema = require('./musicos');
 const musicos = usuario.discriminator('musicos', createSchema(userSchema, musicosSchema, {}));
@@ -45,11 +45,21 @@ const post = mongoose.model('post', createSchema(undefined, postSchema, {
     },
 }));
 
+//CURTIDA
+const curtidaSchema = require('./curtida')
+const curtida = mongoose.model('curtida', createSchema(undefined, curtidaSchema, {
+    collection: 'CurtidaCollection',
+    toJSON: {
+        virtuals: true,
+    }
+}))
+
 module.exports = {
     usuario,
-    admnistrador,
+    administrador,
     categoria,
     musicos,
     cliente,
-    post
+    post,
+    curtida
 }

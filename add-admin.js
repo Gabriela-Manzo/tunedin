@@ -10,13 +10,13 @@ const db = require('./db/config');
 const mongoose = require("mongoose");
 mongoose.connect(db.uri, { useUnifiedTopology: true, useNewUrlParser: true });
 
-const { admnistrador } = require('./api/models/index');
+const { administrador } = require('./api/models/index');
 const criptografia = require('./api/utils/criptografia');
 
 
 const criaAdmin = async () => {
 
-  await admnistrador.create({
+  await administrador.create({
     email: 'teste@teste.com',
     nome: 'Admin',
     senha: criptografia.criarHash('123456')

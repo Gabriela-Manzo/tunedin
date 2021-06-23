@@ -3,7 +3,7 @@ const userTipo = (tipo) => {
         case "administrador":
             return 1;
         
-        case "musico":
+        case "musicos":
             return 2;
 
         case "cliente":

@@ -10,9 +10,4 @@ module.exports = {
         type: String,
         required: true,
     },
-    
-    post: [{
-        type: Schema.Types.ObjectId,
-        ref: 'post'
-    }]
 }

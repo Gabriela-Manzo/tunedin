@@ -1,5 +1,6 @@
 const { post, usuario, categoria } = require('../models/index')
 const postMapper = require('../mappers/post.mapper')
+const fileUtils = require('../utils/file.utils');
 
 const criar = async (model) => {
   const [usuarioDB, categoriaDB] = await Promise.all([
@@ -27,9 +28,16 @@ const criar = async (model) => {
   const novoPost = await post.create({
     usuario: model.usuarioid,
     categoria: model.categoriaid,
-    descricao: model.descricao,
-    status: model.status,
+    imagem: {
+      nomeOriginal: model.imagem.nomeOriginal,
+      nome: model.imagem.novoNome,
+      tipo: model.imagem.tipo,
+    },
+    mensagem: model.mensagem,
+    contatos: model.contatos,
   })
+
+  fileUtils.mover(model.imagem.caminhoOriginal, model.imagem.novoCaminho);
 
   usuarioDB.post = [...usuarioDB.post, novoPost._id]
 
@@ -65,10 +73,10 @@ const pesquisaPorFiltros = async (filtros) => {
   if (filtros.categoriaid)
     filtroMongo.categoria = filtros.categoriaid;
 
-  if (filtros.fornecedorid)
-    filtroMongo.fornecedor = filtros.fornecedorid;
+  if (filtros.usuarioid)
+    filtroMongo.fornecedor = filtros.usuarioid;
   
-  const resultadoDB = await produto.find(filtroMongo).populate("categoria");
+  const resultadoDB = await post.find(filtroMongo).populate("categoria");
 
   return resultadoDB.map(item => {
     return postMapper.postData(item);

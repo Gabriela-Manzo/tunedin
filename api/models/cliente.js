@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 const clienteSchema = {
     nome: {
         type: String,
@@ -27,6 +30,11 @@ const clienteSchema = {
         type: String,
         required: true,
     },
+
+    curtidas: [{
+        type: Schema.Types.ObjectId,
+        ref: 'curtida'
+      }]
 };
 
 module.exports = clienteSchema

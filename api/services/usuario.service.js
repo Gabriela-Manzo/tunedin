@@ -4,45 +4,75 @@ const usuarioMapper = require('../mappers/usuario.mapper')
 
 const perfis = [
     {
-      id: '1',
+      id: 1,
       descricao: 'administrador',
       funcionalidades: [
-        'ALTERA_CATEGORIA',
         'CRIA_CATEGORIA',
+        'ALTERA_CATEGORIA',
         'PESQUISA_CATEGORIA',
         'REMOVE_CATEGORIA',
         'PESQUISA_MUSICO',
         'PESQUISA_MUSICO_ID',
-        'PESQUISA_MUSICO_CATEGORIA',
+        'ATIVAR_MUSICO',
+        'INATIVAR_MUSICO',
         'ATIVAR_CLIENTE',
         'INATIVAR_CLIENTE',
         'PESQUISA_CLIENTE',
+        'PESQUISA_POST'
       ]
     },
     {
-      id: '2',
+      id: 2,
       descricao: 'musicos',
       funcionalidades: [
         'ALTERA_MUSICOS',
-        'PESQUISA_MUSICOS_ID',
-        'PESQUISA_ANUNCIOS',
-        'PESQUISA CLIENTES',
-        'CRIA_ANUNCIOS',
-        'REMOVE_ANUNCIOS',
-        'PESQUISA_MUSICOS_CATEGORIA',
+        'PESQUISA_MUSICO',
+        'PESQUISA_MUSICO_ID',
+        'PESQUISA_POST',
+        'PESQUISA_CLIENTES',
+        'CRIA_POST',
+        'PESQUISA_POST_MUSICOS',
+        'REMOVE_POST',
       ]
     },
     {
-      id: '3',
+      id: 3,
       descricao: 'cliente',
       funcionalidades: [
+        'PESQUISA_MUSICOS_ID',
+        'PESQUISA_MUSICO',
+        'PESQUISA_POST',
+        'CRIA_CURTIDA',
+        'REMOVE_CURTIDA'
       ]
     },
   ];
   
 
+const cria = async () => {
+
+    return usuario.create({
+      email: 'teste@teste.com',
+      senha: md5(`123456${process.env.MD5_SECRET}`)
+    });
+  
+}
+
+const credencial = async (usuarioEmail) => {
+  const userDB = await usuario.findOne({
+      email: usuarioEmail
+  });
+  
+  const userDTO = usuarioMapper.userData(userDB)
+  
+  return {
+      token: criptografia.criarToken(userDTO),
+      userDTO,
+  }
+}
+
 const userExiste = async (email, senha) => {
-    return await usuario.findOne({ email, senha: criptografia.criarHash(senha) }) ? true : false;
+    return await usuario.findOne({ email, senha: criptografia.criarHash(senha) })
 }
 
 const validaEmail = async (email) => {
@@ -52,18 +82,19 @@ const validaEmail = async (email) => {
     return usuarios.length > 0 ? true : false;
   
   }
-  
-const credencial = async (usuarioEmail) => {
-    const userDB = await usuario.findOne({
-        email: usuarioEmail
-    });
+
+const validaSeUsuarioValido = async (usuario) => {
     
-    const userDTO = usuarioMapper.userData(userDB)
+    if (!usuario)
+    return false;
     
-    return {
-        token: criptografia.criarToken(userDTO),
-        userDTO,
-    }
+    if (usuario.kind === "musicos")
+      return usuario.status === "Ativo" ? true : false;
+    
+    if (usuario.kind === "cliente")
+      return usuario.status === "Ativo" ? true : false;
+    
+    return true;
 }
 
 const autenticar = async (email, senha) => {
@@ -79,6 +110,16 @@ const autenticar = async (email, senha) => {
         }
     }
 
+    if(!(await validaSeUsuarioValido(resultDB))){
+      return{
+        sucesso: false,
+        mensagem: "não foi possivel autenticar o usuario",
+        detalhes: [
+          "usuário ou senha inválidos"
+        ]
+      }
+    }
+
     return {
         sucesso: true,
         mensagem: "usuário autenticado com sucesso",
@@ -87,37 +128,27 @@ const autenticar = async (email, senha) => {
 
 }
 
-const cria = async () => {
-
-    return usuario.create({
-      email: 'teste@teste.com',
-      senha: md5(`123456${process.env.MD5_SECRET}`)
-    });
-  
-  }
-
-const buscarPefilPorId = (perfilId) => {
-    const result = perfis.find(item => Number(item.id) === Number(perfilId));
-    return result;
-  }
-  
-const validaFuncionalidadeNoPerfil = (perfilId, funcionalidade) => {
-    const perfil = buscarPefilPorId(perfilId);
-    return perfil.funcionalidades.includes(funcionalidade);
-  }
-
-const buscaTipoUsuarioPorId = (tipoUsuarioId) => {
+const buscaTipoUsuario = (tipoUsuario) => {
     return perfis.find(item => {
-      return item.id === tipoUsuarioId
-    })
-  
-  }
-  
+      return item.id === tipoUsuario
+    })    
+}
+
+// const buscarPefilPorId = (perfilId) => {
+//   const result = perfis.find(item => Number(item.id) === Number(perfilId));
+//   return result;
+// }
+
+// const validaFuncionalidadeNoPerfil = (perfilId, funcionalidade) => {
+//   const perfilporId = buscarPefilPorId(perfilId);
+//   return perfilporId.funcionalidades.includes(funcionalidade)
+// }
 
 module.exports = {
     autenticar,
     cria,
     validaEmail,
-    validaFuncionalidadeNoPerfil,
-    buscaTipoUsuarioPorId
+    // validaFuncionalidadeNoPerfil,
+    buscaTipoUsuario,
+    validaSeUsuarioValido
 }

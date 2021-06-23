@@ -1,9 +1,10 @@
 const musicosService = require('../services/musicos.service')
+const curtidaService = require('../services/curtida.service')
 
 const listar = async (req, res, next) => {
-    const result = await musicosService.listarTodos();
+    const data = await musicosService.listarTodos();
     
-    return res.status(200).send({data: result})
+    return res.status(200).send({data})
 };
 
 const criar = async (req, res, next) => {
@@ -36,8 +37,6 @@ const ativa = async (req, res, next) => {
     const { musicosid } = req.params;
     const resultadoServico = await musicosService.alteraStatus(musicosid, 'Inativo');
   
-  
-    //TODO: tratar saida e finalizar enpoint
     const codigoRetorno = resultadoServico.sucesso ? 200 : 400;
     const dadoRetorno = resultadoServico.sucesso ? { data: resultadoServico.data } : { detalhes: resultadoServico.detalhes };
   
@@ -49,11 +48,11 @@ const ativa = async (req, res, next) => {
   const buscaPorId = async (req, res, next) => {
 
     const { musicosid } = req.params;
-    // const { id, tipoUsuario } = req.usuario;
+    const { id, tipoUsuario } = req.usuario;
   
-    const result = await musicosService.buscaPorId(musicosid);
+    const result = await musicosService.buscaPorId(musicosid,  { id, tipo: tipoUsuario });
     
-    //{ id, tipo: tipoUsuario }
+   
   
     const codigoRetorno = result.sucesso ? 200 : 400;
     const dadoRetorno = result.sucesso ? { data: result.data } : { detalhes: result.detalhes };
@@ -62,11 +61,50 @@ const ativa = async (req, res, next) => {
   
   }
 
+  const buscaPostsPorMusico = async (req, res, next) => {
+    const { params } = req;
+    const data = await musicosService.listaPostsByMusico(params.musicosid);
+    return res.status(200).send({
+      data,
+    })
+  }
+
+const recebeCurtidas = async (req, res, next) => {
+    const { params, usuario } = req;
+  
+    const result = await curtidaService.cria(params.musicosid, usuario.id);
+  
+    //TODO: tratar saida e finalizar enpoint
+    const codigoRetorno = result.sucesso ? 200 : 400;
+    const dadoRetorno = result.sucesso ? { data: result.data } : { detalhes: result.detalhes };
+  
+    return res.status(codigoRetorno).send(dadoRetorno);
+  
+  }
+
+  const listacurtidasRecebidas = async (req, res, next) => {
+    
+    return res.status(200).send({
+      data: []
+    })
+  }
+  
+// const removeCurtidas = async (req, res, next) => {
+//   const { usuario, params } = req;
+//   const result = await curtidaService.remove(params.musicosid, usuario.id);
+//   const codigoRetorno = result.sucesso ? 200 : 400;
+//   const dadoRetorno = result.sucesso ? { data: result.data } : { detalhes: result.detalhes };
+//   return res.status(codigoRetorno).send(dadoRetorno);
+//   }
+
 module.exports = {
     listar,
     criar,
     ativa,
     inativa,
-    buscaPorId
+    buscaPorId,
+    buscaPostsPorMusico,
+    recebeCurtidas,
+    listacurtidasRecebidas
     
 }

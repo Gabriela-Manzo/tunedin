@@ -2,14 +2,20 @@ const { musicos } = require('../models/index');
 const { musicosData } = require('../mappers/musicos.mapper');
 const postMapper = require('../mappers/post.mapper');
 const fileUtils = require('../utils/file.utils');
-const { validaEmail, buscaTipoUsuarioPorId } = require('../services/usuario.service')
+const emailUtils = require('../utils/email.utils');
+const { validaEmail, buscaTipoUsuario } = require('../services/usuario.service')
 const { criarHash } = require('../utils/criptografia')
 
-const listarTodos = async () => {
-    const listaDB = await musicos.find({})
+const listarTodos = async (filtro) => {
+    const listaDB = await musicos.find({}).populate({
+      path: 'curtidas', model: 'curtida',
+    populate: {
+      path: 'cliente', model: 'cliente'
+    }
+    })
 
-    return listaDB.map(musicosDB => {
-        return musicosMapper.musicosData(musicosDB)
+    return listaDB.map(item => {
+        return musicosData(item.toJSON())
     })
 }
 
@@ -43,7 +49,7 @@ const criarPerfil = async (model) => {
     return{
         sucesso: true,
         mensagem: 'cadastro realizado com sucesso',
-        data: musicosMapper.musicosData(novoPerfil)
+        data: musicosData(novoPerfil)
     }
 }
 const alteraStatus = async (id, status) => {
@@ -66,16 +72,16 @@ const alteraStatus = async (id, status) => {
   
     await musicosDB.save();
   
-    // if (status === 'Ativo') {
+    if (status === 'Ativo') {
   
-    //   emailUtils.enviar({
-    //     destinatario: musicosDB.email,
-    //     remetente: process.env.SENDGRID_REMETENTE,
-    //     assunto: `Confirmação do cadastro de ${musicos.nome}`,
-    //     corpo: `sua conta do projeto 04 já esta liberada para uso para uso já`,
-    //   });
+      emailUtils.enviar({
+        destinatario: musicosDB.email,
+        remetente: process.env.SENDGRID_REMETENTE,
+        assunto: `Confirmação do cadastro de ${musicos.nome}`,
+        corpo: `sua conta do projeto 04 já esta liberada para uso para uso já`,
+      });
   
-    // }
+    }
   
     return {
       sucesso: true,
@@ -87,7 +93,7 @@ const alteraStatus = async (id, status) => {
   
   }
 
-  const listaPostsByMusico = async (musicoid, musicologadoid) => {
+  const listaPostsByMusico = async (musicoid) => {
 
     const musicosFromDB = await musicos.findById(musicoid).populate('post');
   
@@ -98,48 +104,49 @@ const alteraStatus = async (id, status) => {
   
   }
   
-  const buscaPorId = async (musicoid) => {
-  
-    //, { id, tipo }
-    const musicosDB = await musicos.findById(musicoid);
+  const buscaPorId = async (musicosid, { id, tipo }) => {
+
+    const musicosDB = await musicos.findById(musicosid);
   
     if (!musicosDB) {
       return {
         sucesso: false,
         mensagem: "operação não pode ser realizada",
         detalhes: [
-          "o musico pesquisado não existe"
+          "o fornecedor pesquisado não existe"
         ]
       }
     }
   
-    // const tipoUsuario = buscaTipoUsuarioPorId(tipo);
+    const tipoUsuario = buscaTipoUsuario(tipo);
   
-    // if (tipoUsuario.descricao === "musico") {
-    //   if (musicoid !== id) {
-    //     return {
-    //       sucesso: false,
-    //       mensagem: "operação não pode ser realizada",
-    //       detalhes: [
-    //         "o usuário não pode realizar esta operação"
-    //       ]
-    //     }
-    //   }
-    // }
+    if (tipoUsuario.descricao === "musicos") {
+      if (musicosid !== id) {
+        return {
+          sucesso: false,
+          mensagem: "operação não pode ser realizada",
+          detalhes: [
+            "o usuário não pode realizar esta operação"
+          ]
+        }
+      }
+    }
   
     return {
       sucesso: true,
-      data: musicosMapper.musicosData(musicosDB.toJSON()),
+      data: musicosData(musicosDB.toJSON()),
     }
   
   
   }
+    
+  
+  
 
 module.exports = {
     criarPerfil,
     listarTodos,
     alteraStatus,
     listaPostsByMusico,
-    buscaPorId
-   
+    buscaPorId,
 }

@@ -50,14 +50,28 @@ const lista = async (req, res, next) => {
     })
   
   }
-  
+
+// const pesquisarCurtidasRealizadas = async (req, res, next) => {
+//     return res.status(200).send({
+//       data: []
+//     });
+//   }
 
   
+// const pesquisaPorId = async (req, res, next) => {
+  
+//     return res.status(200).send({
+//     });
+  
+//   }
+   
 
 module.exports = {
     criar,
     ativa,
     inativa,
-    lista
+    lista,
+    // pesquisarCurtidasRealizadas,
+    // pesquisaPorId,
 
 }

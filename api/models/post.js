@@ -10,12 +10,30 @@ module.exports = {
         type: Schema.Types.ObjectId,
         ref: 'categoria',
     },
-    descricao: {
+    imagem: {
+        nomeOriginal: {
+          type: String,
+          required: false,
+        },
+        nome: {
+          type: String,
+          required: false,
+        },
+        tipo: {
+          type: String,
+          required: false,
+        },
+      },
+    mensagem: {
         type: String,
         required: true,
     },
-    status:{
+    contatos: {
         type: String,
         required: true,
     },
+    portfolio: {
+        type: String,
+        required: true,
+    }
 }
