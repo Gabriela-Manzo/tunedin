@@ -13,7 +13,7 @@ const fileUpload = (destino, isUpdate = false) => {
                 ...fields
             }
             
-            if((!files.imagem || files.imagem.nomeOriginal === '') && !isUpdate) {
+            if((!files.imagem || files.imagem === '') && !isUpdate) {
 
                 return res.status(400).send({
                     mensagem: 'não foi possível realizar a operação',
@@ -23,7 +23,7 @@ const fileUpload = (destino, isUpdate = false) => {
                 });
             }
 
-            if (files.imagem && files.imagem.nomeOriginal !== '') {
+            if (files.imagem) {
         
                 const novoNome = fileUtils.criarNome(files.imagem.type);
                 const novoCaminho = fileUtils.criarEnd(destino, novoNome)

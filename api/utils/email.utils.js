@@ -11,8 +11,7 @@ const enviar = async ({ destinatario, remetente, assunto, corpo }) => {
     // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
   }
 
-  await sendgrid
-    .send(msg)
+  await sendgrid.send(msg)
 
   console.log('E-MAIL ENVIADO');
 

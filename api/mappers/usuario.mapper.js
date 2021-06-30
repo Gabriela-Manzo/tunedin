@@ -15,13 +15,14 @@ const userTipo = (tipo) => {
 }
 
 const userData = (model) => {
-    const { id, email, kind, nome } = model;
+    const { id, email, kind, nome, ...resto} = model;
 
     return {
         id,
         email,
         nome: nome,
         tipoUsuario: userTipo(kind),
+        ...resto
     }
 }
 

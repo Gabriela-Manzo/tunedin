@@ -10,11 +10,11 @@ const clienteSchema = {
         type: String,
         required: true,
     },
-    cnpj: {
+    endereco: {
         type: String,
         required: true,
     },
-    endereco: {
+    uf: {
         type: String,
         required: true,
     },

@@ -1,7 +1,7 @@
 const criptografia = require('../criptografia');
 const usuarioService = require('../../services/usuario.service');
 
-const autorizar = (rota = '*') => {
+const authorizationMiddleware = (rota = '*') => {
 
   return async (req, res, next) => {
 
@@ -50,5 +50,5 @@ const autorizar = (rota = '*') => {
 
 }
 
-module.exports = autorizar;
+module.exports = authorizationMiddleware;
 

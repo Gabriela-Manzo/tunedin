@@ -1,16 +1,14 @@
 const fileUtils = require('../utils/file.utils')
 const postData = (model) => {
-  const {  _id, usuario, categoria, imagem, mensagem, contatos, portfolio } = model
+  const {  _id, usuario, categoria, imagem, mensagem } = model
 
   return {
     id: _id,
-    usuarioId: usuario,
+    usuarioid: usuario,
     // categoriaNome: categoria.nome,
-    categoriaId: categoria,
+    categoriaid: categoria,
     imagem: fileUtils.criaEndDownload('musicos', imagem.nome),
-    mensagem,
-    contatos,
-    portfolio
+    mensagem
   }
 }
 

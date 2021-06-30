@@ -73,11 +73,11 @@ const alteraStatus = async (id, status) => {
     await musicosDB.save();
   
     if (status === 'Ativo') {
-  
+      
       emailUtils.enviar({
         destinatario: musicosDB.email,
         remetente: process.env.SENDGRID_REMETENTE,
-        assunto: `Confirmação do cadastro de ${musicos.nome}`,
+        assunto: `Confirmação do cadastro de ${musicosDB.nome}`,
         corpo: `sua conta do projeto 04 já esta liberada para uso para uso já`,
       });
   

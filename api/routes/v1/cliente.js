@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const validateDTO = require('../../utils/middlewares/validate-dto.middleware');
+const authorizationMiddleware = require('../../utils/middlewares/authorization.middleware')
 
 const clienteController = require('../../controllers/cliente.controller')
 
@@ -19,13 +20,13 @@ module.exports = (router) => {
             'any.required': `"categoria" é um campo obrigatório`,
             'string.empty': `"categoria" não deve ser vazio.`
           }),
-        cnpj: Joi.string().required().messages({
-          'any.required': `"cnpj" é um campo obrigatório`,
-          'string.empty': `"cnpj" não deve ser vazio`,
-        }),
         endereco: Joi.string().required().messages({
           'any.required': `"endereco" é um campo obrigatório`,
           'string.empty': `"endereco" não deve ser vazio`,
+        }),
+        uf: Joi.string().required().messages({
+          'any.required': `"uf" é um campo obrigatório`,
+          'string.empty': `"uf" não deve ser vazio`,
         }),
         cidade: Joi.string().required().messages({
           'any.required': `"cidade" é um campo obrigatório`,
@@ -49,6 +50,7 @@ module.exports = (router) => {
 
     router.route('/cliente/:clienteid/ativa')
     .put(
+      authorizationMiddleware(1),
       validateDTO('params', {
         clienteid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
           'any.required': `"cliente id" é um campo obrigatório`,
@@ -61,6 +63,7 @@ module.exports = (router) => {
 
     router.route('/cliente/:clienteid/inativa')
     .put(
+      authorizationMiddleware(1),
       validateDTO('params', {
         clienteid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
           'any.required': `"cliente id" é um campo obrigatório`,

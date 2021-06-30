@@ -1,6 +1,7 @@
 const { usuario } = require('../models/index')
 const criptografia = require('../utils/criptografia')
 const usuarioMapper = require('../mappers/usuario.mapper')
+const musicoMapper = require('../mappers/musicos.mapper')
 
 const perfis = [
     {
@@ -58,13 +59,13 @@ const cria = async () => {
   
 }
 
-const credencial = async (usuarioEmail) => {
+const credencial = async (usuarioEmail, tipoUsuario) => {
   const userDB = await usuario.findOne({
-      email: usuarioEmail
+      email: usuarioEmail,
+      tipoUsuario
   });
-  
+
   const userDTO = usuarioMapper.userData(userDB)
-  
   return {
       token: criptografia.criarToken(userDTO),
       userDTO,

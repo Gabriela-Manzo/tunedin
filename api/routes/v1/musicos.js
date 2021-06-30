@@ -26,6 +26,10 @@ module.exports = (router) => {
         'any.required': `"genero musical" é um campo obrigatório`,
         'string.empty': `"genero musical" não deve ser vazio.`
       }),
+      uf: Joi.string().required().messages({
+        'any.required': `"uf" é um campo obrigatório`,
+        'string.empty': `"uf" não deve ser vazio`,
+      }),
       cidade: Joi.string().required().messages({
         'any.required': `"cidade" é um campo obrigatório`,
         'string.empty': `"cidade" não deve ser vazio`,
@@ -73,7 +77,7 @@ module.exports = (router) => {
 
   router.route('/musicos/:musicosid/inativa')
   .put(
-    authorizationMiddleware('INATIVAR_MUSICO'),
+    authorizationMiddleware(1),
     validateDTO('params', {
       musicosid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
         'any.required': `"musico id" é um campo obrigatório`,
@@ -86,7 +90,7 @@ module.exports = (router) => {
     
   router.route('/musicos/:usuarioid/post')
   .post(
-    authorizationMiddleware('CRIA_POST'),
+    authorizationMiddleware(2),
     fileUpload('posts'),
     validateDTO('params', {
       usuarioid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
@@ -116,6 +120,7 @@ module.exports = (router) => {
       )
   router.route('/musicos/:usuarioid/post/:postid')
   .delete(
+    authorizationMiddleware(2),
     validateDTO('params', {
       usuarioid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
         'any.required': `"usuario id" é um campo obrigatório`,
@@ -133,7 +138,7 @@ module.exports = (router) => {
 
   router.route('/musicos/:musicosid/post')
   .get(
-    authorizationMiddleware('PESQUISA_POST_MUSICOS'),
+    authorizationMiddleware(3),
     validateDTO('params', {
       musicosid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
         'any.required': `"musico id" é um campo obrigatório`,

@@ -34,7 +34,6 @@ const criar = async (model) => {
       tipo: model.imagem.tipo,
     },
     mensagem: model.mensagem,
-    contatos: model.contatos,
   })
 
   fileUtils.mover(model.imagem.caminhoOriginal, model.imagem.novoCaminho);
