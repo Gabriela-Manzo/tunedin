@@ -19,7 +19,7 @@ module.exports = {
           type: String,
           required: false,
         },
-        tipo: {
+        type: {
           type: String,
           required: false,
         },
@@ -28,12 +28,4 @@ module.exports = {
         type: String,
         required: true,
     },
-    contatos: {
-        type: String,
-        required: true,
-    },
-    portfolio: {
-        type: String,
-        required: true,
-    }
 }

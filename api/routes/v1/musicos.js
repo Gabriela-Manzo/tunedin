@@ -88,7 +88,7 @@ module.exports = (router) => {
     musicosController.inativa,
   )
     
-  router.route('/musicos/:usuarioid/post')
+  router.route('/musicos/:usuarioid/posts')
   .post(
     authorizationMiddleware(2),
     fileUpload('posts'),
@@ -100,7 +100,7 @@ module.exports = (router) => {
       }),
     }),
     validateDTO('body', {
-      descricao: Joi.string().required().messages({
+      mensagem: Joi.string().required().messages({
         'any.required': `"descrição" é um campo obrigatório`,
         'string.empty': `"descrição" não deve ser vazio`,
       }),
@@ -109,44 +109,23 @@ module.exports = (router) => {
         'string.empty': `"categoria id" não deve ser vazio`,
         'string.pattern.base': `"categoria id" fora do formato experado`,
       }),
-      status: Joi.boolean().required().messages({
-        'any.required': `"status" é um campo obrigatório`,
-        'booleam.empty': `"status" não deve ser vazio`
-      }),
     }, {
       allowUnknown: true,
     }),
     postController.cria
       )
-  router.route('/musicos/:usuarioid/post/:postid')
-  .delete(
-    authorizationMiddleware(2),
+
+  router.route('/musicos/:usuarioid/post')
+  .get(
+    // authorizationMiddleware(),
     validateDTO('params', {
       usuarioid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
-        'any.required': `"usuario id" é um campo obrigatório`,
-        'string.empty': `"usuario id" não deve ser vazio`,
-        'string.pattern.base': `"usuario id" fora do formato esperado`,
-      }),
-      postid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
-        'any.required': `"post id" é um campo obrigatório`,
-        'string.empty': `"post id" não deve ser vazio`,
-        'string.pattern.base': `"post id" fora do formato esperado`,
-      }),
-    }),
-    postController.deleta
-  )
-
-  router.route('/musicos/:musicosid/post')
-  .get(
-    authorizationMiddleware(3),
-    validateDTO('params', {
-      musicosid: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required().messages({
         'any.required': `"musico id" é um campo obrigatório`,
         'string.empty': `"musico id" não deve ser vazio`,
         'string.pattern.base': `"musico id" fora do formato esperado`,
       }),
     }),
-    musicosController.buscaPostsPorMusico
+    postController.listarPorMusico,
   )
 
   router

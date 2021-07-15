@@ -1,8 +1,8 @@
 const fileUtils = require('../utils/file.utils')
 
 const musicosData = (model) => {
-    const{  _id, nome, profile, generomusical, imagem, uf, cidade, status } = model
-    
+    const{  _id, nome, profile, generomusical, imagem, uf, cidade, email,status, post } = model
+    // console.log(model);
     return{
         id: _id,
         profile,
@@ -12,6 +12,8 @@ const musicosData = (model) => {
         uf,
         cidade,
         status,
+        email,
+        post
     }
 }
 

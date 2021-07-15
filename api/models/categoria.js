@@ -16,7 +16,7 @@ module.exports = {
         type: String,
         required: false,
       },
-      tipo: {
+      type: {
         type: String,
         required: false,
       },

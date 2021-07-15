@@ -26,7 +26,7 @@ const criarCategoria = async (model) => {
         imagem: {
             nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
-            tipo: model.imagem.tipo,
+            type: model.imagem.type,
           }      
     })
     
@@ -88,7 +88,7 @@ const alterarCategoria = async (categoriaId, model) => {
         categoriaDB.imagem = {
             nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
-            tipo: model.imagem.tipo,
+            type: model.imagem.type,
         }
 
     }

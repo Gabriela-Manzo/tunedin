@@ -40,7 +40,7 @@ const criarPerfil = async (model) => {
         imagem: {
             nomeOriginal: model.imagem.nomeOriginal,
             nome: model.imagem.novoNome,
-            tipo: model.imagem.tipo,
+            type: model.imagem.type,
           }      
     })
     
@@ -93,16 +93,16 @@ const alteraStatus = async (id, status) => {
   
   }
 
-  const listaPostsByMusico = async (musicoid) => {
+  // const listaPostsByMusico = async (musicosid) => {
 
-    const musicosFromDB = await musicos.findById(musicoid).populate('post');
+  //   const musicosFromDB = await musicos.findById(musicosid).populate('post');
+    
+  //   const musciosAsJSON = musicosFromDB.toJSON();
+  //   return [musciosAsJSON].map(item => {
+  //     return musicosData(item);
+  //   });
   
-    const musciosAsJSON = musicosFromDB.toJSON();
-    return musciosAsJSON.post.map(item => {
-      return postMapper.postData(item);
-    });
-  
-  }
+  // }
   
   const buscaPorId = async (musicosid, { id, tipo }) => {
 
@@ -147,6 +147,6 @@ module.exports = {
     criarPerfil,
     listarTodos,
     alteraStatus,
-    listaPostsByMusico,
+    // listaPostsByMusico,
     buscaPorId,
 }

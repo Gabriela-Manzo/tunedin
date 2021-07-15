@@ -4,10 +4,11 @@ const postData = (model) => {
 
   return {
     id: _id,
-    usuarioid: usuario,
-    // categoriaNome: categoria.nome,
-    categoriaid: categoria,
-    imagem: fileUtils.criaEndDownload('musicos', imagem.nome),
+    usuarioNome: usuario.nome,
+    categoriaNome: categoria.nome,
+    usuarioId: usuario._id,
+    categoriaId: categoria._id,
+    imagem: fileUtils.criaEndDownload('posts', imagem.nome),
     mensagem
   }
 }

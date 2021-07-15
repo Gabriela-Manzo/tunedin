@@ -3,6 +3,7 @@ const postMapper = require('../mappers/post.mapper')
 const fileUtils = require('../utils/file.utils');
 
 const criar = async (model) => {
+
   const [usuarioDB, categoriaDB] = await Promise.all([
     usuario.findById(model.usuarioid),
     categoria.findById(model.categoriaid),
@@ -31,7 +32,7 @@ const criar = async (model) => {
     imagem: {
       nomeOriginal: model.imagem.nomeOriginal,
       nome: model.imagem.novoNome,
-      tipo: model.imagem.tipo,
+      type: model.imagem.type,
     },
     mensagem: model.mensagem,
   })
@@ -59,7 +60,15 @@ const criar = async (model) => {
 }
 
 const listaPost = async () => {
-  const listaPostDB = await post.find({})
+  const listaPostDB = await post.find({}).populate('usuario').populate('categoria')
+  return listaPostDB.map(postDB => {
+    return postMapper.postData(postDB)
+  })
+}
+
+const listPostByUser = async (usuarioid) => {
+  const listaPostDB = await post.find({usuario: usuarioid}).populate('usuario').populate('categoria')
+  console.log(listaPostDB);
   return listaPostDB.map(postDB => {
     return postMapper.postData(postDB)
   })
@@ -73,7 +82,7 @@ const pesquisaPorFiltros = async (filtros) => {
     filtroMongo.categoria = filtros.categoriaid;
 
   if (filtros.usuarioid)
-    filtroMongo.fornecedor = filtros.usuarioid;
+    filtroMongo.usuario = filtros.usuarioid;
   
   const resultadoDB = await post.find(filtroMongo).populate("categoria");
 
@@ -120,7 +129,7 @@ const deletar = async ({ usuarioId, postId }) => {
     return item.toString() !== postId
   });
 
-  usuarioDB.post = usuariorDB.post.filter(item => {
+  usuarioDB.post = usuarioDB.post.filter(item => {
     return item.toString() !== postId
   });
 
@@ -145,6 +154,7 @@ module.exports = {
   criar,
   listaPost,
   pesquisaPorFiltros,
-  deletar
+  deletar,
+  listPostByUser
 
 }

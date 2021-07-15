@@ -12,8 +12,8 @@ const criaEndDownload = (origem, arquivoNome) => {
   }
   
 
-const criarNome = (tipo) => {
-    const tipoTratado = tipo.split('/')[1];
+const criarNome = (type) => {
+    const tipoTratado = type.split('/')[1];
     return `${uuid()}.${tipoTratado}`
   }
 

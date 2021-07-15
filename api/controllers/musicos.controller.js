@@ -64,6 +64,7 @@ const ativa = async (req, res, next) => {
   const buscaPostsPorMusico = async (req, res, next) => {
     const { params } = req;
     const data = await musicosService.listaPostsByMusico(params.musicosid);
+    console.log(data)
     return res.status(200).send({
       data,
     })
